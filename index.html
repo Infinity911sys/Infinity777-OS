@@ -1,93 +1,1459 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>INFINITY777 OS</title>
   <meta charset="UTF-8" />
+  <title>Infinity Sovereign OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    :root {
+      --bg: #05060a;
+      --bg-alt: #0b0d14;
+      --panel: #101320;
+      --panel-alt: #15192a;
+      --accent: #4f9cff;
+      --accent-soft: rgba(79, 156, 255, 0.12);
+      --accent-strong: #7fd1ff;
+      --danger: #ff4f6b;
+      --text: #f5f7ff;
+      --text-soft: #a5b0d0;
+      --border-subtle: #22263a;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+      --shadow-glow: 0 0 40px rgba(79, 156, 255, 0.35);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.25s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
     body {
-      background:black;
-      color:#00ffcc;
-      font-family:monospace;
-      padding:20px;
+      height: 100%;
+      width: 100%;
+      background: radial-gradient(circle at top, #15192a 0, #05060a 55%, #000 100%);
+      color: var(--text);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
     }
-    input {
-      width:80%;
-      background:black;
-      color:#00ffcc;
-      border:1px solid #00ffcc;
-      padding:8px;
+
+    body {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 18px;
     }
-    button {
-      padding:8px 16px;
-      background:#00ffcc;
-      color:black;
-      border:none;
-      cursor:pointer;
+
+    .os-shell {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1.6fr) minmax(0, 1.4fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-areas:
+        "sidebar header header"
+        "sidebar main   right";
+      gap: 14px;
+      width: 100%;
+      max-width: 1440px;
+      max-height: 880px;
+      margin: auto;
+      background: linear-gradient(135deg, rgba(15, 20, 40, 0.96), rgba(5, 6, 12, 0.98));
+      border-radius: 24px;
+      border: 1px solid rgba(120, 140, 200, 0.22);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      position: relative;
     }
-    pre { white-space:pre-wrap; }
+
+    .os-shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(79, 156, 255, 0.18), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(127, 209, 255, 0.12), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .sidebar {
+      grid-area: sidebar;
+      background: radial-gradient(circle at top, #171b2c 0, #090b12 55%);
+      border-right: 1px solid var(--border-subtle);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: conic-gradient(
+        from 210deg,
+        #4f9cff,
+        #7fd1ff,
+        #4f9cff,
+        #9f7fff,
+        #4f9cff
+      );
+      box-shadow: 0 0 22px rgba(79, 156, 255, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 0%, #ffffff, #101320 70%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .sidebar-chip {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(127, 209, 255, 0.4);
+      background: radial-gradient(circle at top, rgba(127, 209, 255, 0.18), transparent);
+      color: var(--accent-strong);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #4fff9c;
+      box-shadow: 0 0 12px rgba(79, 255, 156, 0.9);
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+      opacity: 0.9;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 9px;
+      border-radius: 9px;
+      font-size: 12px;
+      color: var(--text-soft);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast), transform 0.12s ease-out;
+    }
+
+    .nav-item-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 7px;
+      background: radial-gradient(circle at 30% 0%, #ffffff, #15192a 70%);
+      border: 1px solid rgba(127, 209, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--accent-strong);
+    }
+
+    .nav-label {
+      font-size: 12px;
+    }
+
+    .nav-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(127, 209, 255, 0.4);
+      color: var(--accent-strong);
+      background: rgba(79, 156, 255, 0.08);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(79, 156, 255, 0.18), rgba(15, 20, 40, 0.9));
+      border-color: rgba(127, 209, 255, 0.7);
+      color: var(--text);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-1px);
+    }
+
+    .nav-item:hover:not(.active) {
+      background: rgba(21, 25, 45, 0.9);
+      border-color: rgba(127, 209, 255, 0.25);
+      color: var(--text);
+      transform: translateY(-0.5px);
+    }
+
+    .sidebar-card {
+      margin-top: 4px;
+      padding: 10px 9px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, #181d30 0, #090b12 60%);
+      border: 1px solid rgba(120, 140, 200, 0.35);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sidebar-card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+    }
+
+    .sidebar-card-body {
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(120, 140, 200, 0.35);
+      font-size: 10px;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    .sidebar-footer strong {
+      font-weight: 600;
+      color: var(--accent-strong);
+    }
+
+    .header {
+      grid-area: header;
+      padding: 14px 16px 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: linear-gradient(90deg, rgba(10, 12, 20, 0.96), rgba(10, 12, 20, 0.9));
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .header-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-title {
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .header-badge {
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(127, 209, 255, 0.5);
+      background: rgba(79, 156, 255, 0.12);
+      color: var(--accent-strong);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #4fff9c;
+      box-shadow: 0 0 12px rgba(79, 255, 156, 0.9);
+    }
+
+    .header-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+      max-width: 520px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(120, 140, 200, 0.5);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(10, 12, 20, 0.9);
+    }
+
+    .pill-label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 10px;
+    }
+
+    .pill-value {
+      font-size: 11px;
+      color: var(--accent-strong);
+    }
+
+    .btn-primary {
+      font-size: 11px;
+      padding: 7px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(127, 209, 255, 0.8);
+      background: radial-gradient(circle at top, #4f9cff, #1a2340);
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-glow);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 50px rgba(79, 156, 255, 0.6);
+      background: radial-gradient(circle at top, #7fd1ff, #1a2340);
+    }
+
+    .btn-primary-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .main {
+      grid-area: main;
+      padding: 10px 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel {
+      background: radial-gradient(circle at top, #171b2c 0, #090b12 60%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(120, 140, 200, 0.4);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.7);
+      padding: 12px 12px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panel-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+    }
+
+    .panel-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .panel-tabs {
+      display: inline-flex;
+      padding: 2px;
+      border-radius: var(--radius-pill);
+      background: rgba(10, 12, 20, 0.9);
+      border: 1px solid rgba(120, 140, 200, 0.5);
+      gap: 2px;
+    }
+
+    .panel-tab {
+      font-size: 10px;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        border-color var(--transition-fast), transform 0.12s ease-out;
+    }
+
+    .panel-tab.active {
+      background: radial-gradient(circle at top, #4f9cff, #1a2340);
+      color: #ffffff;
+      border-color: rgba(127, 209, 255, 0.9);
+      box-shadow: var(--shadow-glow);
+      transform: translateY(-0.5px);
+    }
+
+    .panel-tab:hover:not(.active) {
+      background: rgba(21, 25, 45, 0.9);
+      color: var(--text);
+      border-color: rgba(127, 209, 255, 0.4);
+    }
+
+    .panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .mini-card {
+      border-radius: var(--radius-md);
+      background: radial-gradient(circle at top, #181d30 0, #090b12 60%);
+      border: 1px solid rgba(120, 140, 200, 0.4);
+      padding: 8px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mini-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mini-card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+    }
+
+    .mini-card-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(127, 209, 255, 0.5);
+      color: var(--accent-strong);
+      background: rgba(79, 156, 255, 0.12);
+    }
+
+    .mini-card-body {
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(120, 140, 200, 0.5);
+      color: var(--text-soft);
+      background: rgba(10, 12, 20, 0.9);
+    }
+
+    .tag-strong {
+      color: var(--accent-strong);
+      border-color: rgba(127, 209, 255, 0.7);
+      background: rgba(79, 156, 255, 0.12);
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .list-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      margin-top: 4px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 10px rgba(127, 209, 255, 0.8);
+    }
+
+    .list-label {
+      font-weight: 500;
+      color: var(--text);
+      margin-right: 4px;
+    }
+
+    .right {
+      grid-area: right;
+      padding: 10px 16px 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-compact {
+      padding: 10px 10px 9px 10px;
+      border-radius: 14px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(127, 209, 255, 0.6);
+      background: rgba(79, 156, 255, 0.12);
+      color: var(--accent-strong);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #4fff9c;
+      box-shadow: 0 0 12px rgba(79, 255, 156, 0.9);
+    }
+
+    .meter {
+      margin-top: 6px;
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(10, 12, 20, 0.9);
+      border: 1px solid rgba(120, 140, 200, 0.5);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .meter-fill {
+      position: absolute;
+      inset: 0;
+      width: 68%;
+      background: linear-gradient(90deg, #4f9cff, #7fd1ff, #4fff9c);
+      box-shadow: 0 0 20px rgba(79, 156, 255, 0.7);
+      transform-origin: left center;
+      transition: transform 0.4s ease-out;
+    }
+
+    .workspace-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .workspace-item {
+      padding: 7px 8px;
+      border-radius: 9px;
+      border: 1px solid rgba(120, 140, 200, 0.5);
+      background: rgba(10, 12, 20, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        transform 0.12s ease-out;
+    }
+
+    .workspace-item:hover {
+      background: rgba(21, 25, 45, 0.95);
+      border-color: rgba(127, 209, 255, 0.7);
+      transform: translateY(-0.5px);
+    }
+
+    .workspace-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .workspace-item-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-strong);
+    }
+
+    .workspace-item-meta {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .workspace-item-body {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 2px;
+      opacity: 0.85;
+    }
+
+    .footer-note strong {
+      color: var(--accent-strong);
+      font-weight: 600;
+    }
+
+    .pill-danger {
+      border-color: rgba(255, 79, 107, 0.7);
+      color: var(--danger);
+      background: rgba(255, 79, 107, 0.12);
+    }
+
+    .pill-soft {
+      border-color: rgba(120, 140, 200, 0.5);
+      color: var(--text-soft);
+      background: rgba(10, 12, 20, 0.9);
+    }
+
+    @media (max-width: 1100px) {
+      .os-shell {
+        grid-template-columns: 230px minmax(0, 1.4fr);
+        grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-areas:
+          "sidebar header"
+          "sidebar main"
+          "sidebar right";
+      }
+    }
+
+    @media (max-width: 880px) {
+      body {
+        padding: 10px;
+      }
+
+      .os-shell {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto auto auto;
+        grid-template-areas:
+          "header"
+          "sidebar"
+          "main"
+          "right";
+        max-height: none;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .sidebar-header {
+        width: 100%;
+      }
+
+      .nav-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .nav-item {
+        flex: 1 1 120px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="os-shell" id="osShell">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-mark">
+          <div class="brand-logo"></div>
+          <div class="brand-text">
+            <div class="brand-title">Infinity Sovereign OS</div>
+            <div class="brand-subtitle">Infinity911 • Sovereign‑grade autonomy</div>
+          </div>
+        </div>
+        <div class="sidebar-chip">
+          <span class="sidebar-chip-dot"></span>
+          <span>Owner: Chad</span>
+        </div>
+      </div>
 
-<pre id="statusBlock">
-Initializing INFINITY777 OS...
-</pre>
+      <div>
+        <div class="sidebar-section-title">System workspace</div>
+        <div class="nav-list" id="navList">
+          <div class="nav-item active" data-view="architecture">
+            <div class="nav-item-main">
+              <div class="nav-icon">A</div>
+              <div class="nav-label">Architecture</div>
+            </div>
+            <div class="nav-pill">Live map</div>
+          </div>
+          <div class="nav-item" data-view="workspace">
+            <div class="nav-item-main">
+              <div class="nav-icon">W</div>
+              <div class="nav-label">Workspace</div>
+            </div>
+            <div class="nav-pill">Ops</div>
+          </div>
+          <div class="nav-item" data-view="engine">
+            <div class="nav-item-main">
+              <div class="nav-icon">E</div>
+              <div class="nav-label">Supercharger Engine</div>
+            </div>
+            <div class="nav-pill">Shell</div>
+          </div>
+          <div class="nav-item" data-view="legal">
+            <div class="nav-item-main">
+              <div class="nav-icon">L</div>
+              <div class="nav-label">Sovereign Notice</div>
+            </div>
+            <div class="nav-pill">IP</div>
+          </div>
+        </div>
+      </div>
 
-<input id="cmd" placeholder="Enter command (status, scan, logs)">
-<button onclick="runCommand()">RUN</button>
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Sovereign control</div>
+        <div class="sidebar-card-body">
+          This OS instance is logically owned and controlled by <strong>Chad</strong>. No external
+          platform, preview, or vendor has authority over its operation, identity, or intent.
+        </div>
+      </div>
 
-<pre id="log"></pre>
+      <div class="sidebar-footer">
+        <strong>Infinity911 Sovereign OS</strong> is a conceptual emergency‑response and autonomy
+        platform. This shell is a local, static deployment — no backend, no tracking, no external
+        control.
+      </div>
+    </aside>
 
-<script>
-function loadStatus() {
-  const s = {
-    system: "INFINITY777 OS",
-    version: "1.0.0",
-    node: "NODE_777_SECURE: ACTIVE",
-    aiIntegrity: "VIGILANT / PROACTIVE",
-    encryption: "LOCAL AES-256 (SIMULATED)",
-    userControl: "777 - FULL SOVEREIGNTY",
-    status: "True. Armored. Ready."
-  };
+    <header class="header">
+      <div class="header-left">
+        <div class="header-title-row">
+          <div class="header-title">Sovereign operating space</div>
+          <div class="header-badge">
+            <span class="header-badge-dot"></span>
+            <span>Local shell • v1.0</span>
+          </div>
+        </div>
+        <div class="header-subtitle">
+          This is your working surface, not a preview. You can evolve the layout, logic, and flows
+          from here and wire it to Firebase or any backend when you’re ready.
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="pill">
+          <span class="pill-label">Mode</span>
+          <span class="pill-value" id="modeLabel">Design shell</span>
+        </div>
+        <button class="btn-primary" id="toggleModeBtn">
+          <span class="btn-primary-icon">⟳</span>
+          <span>Toggle system mode</span>
+        </button>
+      </div>
+    </header>
 
-  document.getElementById("statusBlock").textContent =
-`==================================================
-          INFINITY777 OS ver ${s.version}            
-==================================================
-[SYSTEM FOUNDATION] : ${s.system}
-[AI INTEGRITY]      : ${s.aiIntegrity}
-[ENCRYPTION PROTO]  : ${s.encryption}
-[USER CONTROL]      : ${s.userControl}
-==================================================
-Status: ${s.status}
-==================================================`;
-}
+    <main class="main">
+      <section class="panel" id="panelArchitecture">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-title">Architecture map</div>
+            <div class="panel-subtitle">
+              High‑level view of the Infinity911 / Sovereign OS layers. This is a visual contract,
+              not a backend yet.
+            </div>
+          </div>
+          <div class="panel-tabs">
+            <div class="panel-tab active" data-arch-tab="stack">Stack</div>
+            <div class="panel-tab" data-arch-tab="flows">Flows</div>
+            <div class="panel-tab" data-arch-tab="states">States</div>
+          </div>
+        </div>
 
-function runCommand() {
-  const cmd = document.getElementById("cmd").value.trim();
-  if (!cmd) return;
+        <div class="panel-body" id="archStackView">
+          <div class="grid-two">
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <div class="mini-card-title">Core stack</div>
+                <div class="mini-card-pill">Frontline</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="list">
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">UI shell:</span> Single‑file HTML/CSS/JS, deployable
+                      on GitHub Pages or any static host.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Backend (future):</span> Firebase, Firestore, or
+                      NG911‑aligned data fabric — plug‑in, not required for this shell.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Identity:</span> Sovereign — no third‑party
+                      platform owns or controls this OS.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  let output = "";
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <div class="mini-card-title">Infinity911 lens</div>
+                <div class="mini-card-pill">Emergency OS</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="list">
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Mission:</span> Treat every interaction as a
+                      life‑safety‑grade workflow — clarity, speed, and control.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Design rule:</span> No hidden control surfaces. Every
+                      critical state is visible and explainable.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Future wiring:</span> NG911, ESInet, and AI‑driven
+                      triage can be layered behind this shell.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  if (cmd === "status") {
-    output = "System aligned. All core shields active.";
-  } else if (cmd === "scan") {
-    output = "Sentry sweep complete. No hostile signatures detected.";
-  } else if (cmd === "logs") {
-    output = "No critical events logged in this session.";
-  } else {
-    output = "Command acknowledged. No matching operation in v1.";
-  }
+          <div>
+            <div class="sidebar-section-title">Key layers</div>
+            <div class="tag-row">
+              <div class="tag tag-strong">Sovereign identity</div>
+              <div class="tag">UI shell</div>
+              <div class="tag">Routing &amp; state</div>
+              <div class="tag">Data fabric (future)</div>
+              <div class="tag">Emergency workflows</div>
+              <div class="tag">Audit &amp; trace</div>
+            </div>
+          </div>
+        </div>
 
-  document.getElementById("log").textContent =
-    "> " + cmd + "\n" + output + "\n\n" +
-    document.getElementById("log").textContent;
+        <div class="panel-body" id="archFlowsView" style="display: none;">
+          <div class="grid-two">
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <div class="mini-card-title">User flow</div>
+                <div class="mini-card-pill">Operator</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="list">
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">1.</span> Operator lands in the OS workspace and
+                      selects a lane (Architecture, Workspace, Engine, Legal).
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">2.</span> OS surfaces the relevant panel and state
+                      without leaving the shell — no external redirects.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">3.</span> When wired to a backend, actions here
+                      become real dispatch, triage, or automation calls.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  document.getElementById("cmd").value = "";
-}
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <div class="mini-card-title">System flow</div>
+                <div class="mini-card-pill">Engine</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="list">
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Input:</span> Events, signals, or operator actions
+                      enter the Supercharger Engine.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Processing:</span> Rules, priorities, and safety
+                      constraints are applied.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Output:</span> Clear, explainable actions — never
+                      silent or hidden behavior.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-loadStatus();
-</script>
+          <div>
+            <div class="sidebar-section-title">Flow principles</div>
+            <div class="tag-row">
+              <div class="tag tag-strong">No hidden jumps</div>
+              <div class="tag">Explainable transitions</div>
+              <div class="tag">Operator‑first</div>
+              <div class="tag">Fail‑safe defaults</div>
+              <div class="tag">Traceable outcomes</div>
+            </div>
+          </div>
+        </div>
 
-</body>
-</html>
+        <div class="panel-body" id="archStatesView" style="display: none;">
+          <div class="grid-two">
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <div class="mini-card-title">OS states</div>
+                <div class="mini-card-pill">High‑level</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="list">
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Design shell:</span> Current mode — safe, static,
+                      non‑connected, ideal for layout and thinking.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Simulated:</span> Local or mocked data, no real
+                      dispatch, but realistic flows.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Live:</span> Connected to real backends, with strict
+                      safety, audit, and rollback.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-card-header">
+                <div class="mini-card-title">Guardrails</div>
+                <div class="mini-card-pill">Safety</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="list">
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">No silent escalation:</span> Every state change is
+                      visible to the operator.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">No external override:</span> No vendor or preview
+                      tool can change OS behavior.
+                    </div>
+                  </div>
+                  <div class="list-item">
+                    <div class="list-bullet"></div>
+                    <div>
+                      <span class="list-label">Reversible:</span> Critical actions must be
+                      explainable and reversible where possible.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="sidebar-section-title">State tags</div>
+            <div class="tag-row">
+              <div class="tag tag-strong">Design shell (now)</div>
+              <div class="tag">Simulated (next)</div>
+              <div class="tag">Live (future)</div>
+              <div class="tag">Audit‑ready</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-compact" id="panelEngine">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-title">Supercharger engine shell</div>
+            <div class="panel-subtitle">
+              A placeholder for your logic engine. Right now it simulates state changes locally —
+              no backend, no external control.
+            </div>
+          </div>
+          <div class="panel-tabs">
+            <div class="panel-tab active" data-engine-tab="status">Status</div>
+            <div class="panel-tab" data-engine-tab="log">Event log</div>
+          </div>
+        </div>
+
+        <div class="panel-body" id="engineStatusView">
+          <div class="status-row">
+            <div>Engine mode: <span id="engineModeLabel">Idle • Design shell</span></div>
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              <span>Local only</span>
+            </div>
+          </div>
+          <div class="meter">
+            <div class="meter-fill" id="engineMeter"></div>
+          </div>
+          <div class="tag-row">
+            <div class="tag tag-strong">No backend attached</div>
+            <div class="tag">No external calls</div>
+            <div class="tag">Safe to experiment</div>
+          </div>
+        </div>
+
+        <div class="panel-body" id="engineLogView" style="display: none;">
+          <div class="list" id="engineLog">
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">Boot:</span> Supercharger Engine shell initialized in
+                design mode. No external systems connected.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="right">
+      <section class="panel panel-compact" id="panelWorkspace">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-title">Workspace lanes</div>
+            <div class="panel-subtitle">
+              Quick‑switch between working surfaces. These are conceptual lanes — you can wire them
+              to real apps later.
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="workspace-list" id="workspaceList">
+            <div class="workspace-item" data-workspace="ops">
+              <div class="workspace-item-header">
+                <div class="workspace-item-title">Operations lane</div>
+                <div class="workspace-item-meta">Dispatch • Monitoring • Triage</div>
+              </div>
+              <div class="workspace-item-body">
+                Use this lane for anything that feels like “live operations” — even before you have
+                a backend. It’s your mental staging area.
+              </div>
+            </div>
+            <div class="workspace-item" data-workspace="design">
+              <div class="workspace-item-header">
+                <div class="workspace-item-title">Design lane</div>
+                <div class="workspace-item-meta">Architecture • Flows • States</div>
+              </div>
+              <div class="workspace-item-body">
+                Capture how you want the system to behave under pressure. This lane is for diagrams,
+                rules, and constraints.
+              </div>
+            </div>
+            <div class="workspace-item" data-workspace="legal">
+              <div class="workspace-item-header">
+                <div class="workspace-item-title">Sovereign lane</div>
+                <div class="workspace-item-meta">Ownership • IP • Boundaries</div>
+              </div>
+              <div class="workspace-item-body">
+                This is where you define what nobody else is allowed to claim, control, or override
+                — in plain language.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-compact" id="panelLegal">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-title">Sovereign notice</div>
+            <div class="panel-subtitle">
+              A simple, human‑readable statement of control. This is not legal advice — it’s a
+              boundary line.
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="list">
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">Ownership:</span> This OS concept, structure, and
+                interaction model are authored and owned by Chad.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">Control:</span> No preview tool, vendor, or third party is
+                granted authority to operate, represent, or claim this system.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">Data:</span> This shell does not collect, store, or
+                transmit personal data. Any future backend must be explicit and auditable.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">Use:</span> You may duplicate, fork, or extend this shell
+                for your own deployments without asking anyone’s permission.
+              </div>
+            </div>
+          </div>
+          <div class="footer-note">
+            <strong>Note:</strong> For real deployments, you’d pair this with formal legal language
+            (IP, licensing, liability). This text is a boundary, not a contract.
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-compact">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-title">Next steps</div>
+            <div class="panel-subtitle">
+              This file is ready to drop into <code>index.html</code> and publish via GitHub Pages.
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="list">
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">1.</span> Create a GitHub repo (e.g., <code>InfinityOS</code>).
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">2.</span> Add this file as <code>index.html</code> at the
+                root.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">3.</span> Enable GitHub Pages (branch: <code>main</code>,
+                folder: <code>/root</code>).
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-label">4.</span> Your OS goes live at
+                <code>https://&lt;username&gt;.github.io/&lt;repo&gt;</code>.
+              </div>
+            </div>
+          </div>
+          <div class="footer-note">
+            When you’re ready, we can add Firebase wiring and real data flows behind this shell.
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <script>
+    (function () {
+      const navItems = document.querySelectorAll(".nav-item");
+      const panelArchitecture = document.getElementById("panelArchitecture");
+      const panelEngine = document.getElementById("panelEngine");
+      const panelWorkspace = document.getElementById("panelWorkspace");
+      const panelLegal = document.getElementById("panelLegal");
+
+      const views = {
+        architecture: () => {
+          panelArchitecture.style.display = "flex";
+          panelEngine.style.display = "flex";
+          panelWorkspace.style.display = "flex";
+          panelLegal.style.display = "flex";
+        },
+        workspace: () => {
+          panelArchitecture.style.display = "none";
+          panelEngine.style.display = "flex";
+          panelWorkspace.style.display = "flex";
+          panelLegal.style.display = "flex";
+        },
+        engine: () => {
+          panelArchitecture.style.display = "none";
+          panelEngine.style.display = "flex";
+          panelWorkspace.style.display = "none";
+          panelLegal.style.display = "flex";
+        },
+        legal: () => {
+          panelArchitecture.style.display = "none";
+          panelEngine.style.display = "none";
+          panelWorkspace.style.display = "none";
+          panelLegal.style.display = "flex";
+        },
+      };
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          navItems.forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+          const view = item.getAttribute("data-view");
+          if (views[view]) views[view]();
+        });
+      });
+
+      const archTabs = document.querySelectorAll("[data-arch-tab]");
+      const archStackView = document.getElementById("archStackView");
+      const archFlowsView = document.getElementById("archFlowsView");
+      const archStatesView = document.getElementById("archStatesView");
+
+      const archViews = {
+        stack: archStackView,
+        flows: archFlowsView,
+        states: archStatesView,
+      };
+
+      archTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          archTabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          const key = tab.getAttribute("data-arch-tab");
+          Object.values(archViews).forEach((el) => (el.style.display = "none"));
+          if (archViews[key]) archViews[key].style.display = "flex";
+        });
+      });
+
+      const engineTabs = document.querySelectorAll("[data-engine-tab]");
+      const engineStatusView = document.getElementById("engineStatusView");
+      const engineLogView = document.getElementById("engineLogView");
+
+      engineTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          engineTabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          const key = tab.getAttribute("data-engine-tab");
+          if (key === "status") {
+            engineStatusView.style.display = "flex";
+            engineLogView.style.display = "none";
+          } else {
+            engineStatusView.style.display = "none";
+            engineLogView.style.display = "flex";
+          }
+        });
+      });
+
+      const toggleModeBtn = document.getElementById("toggleModeBtn");
+      const modeLabel = document.getElementById("modeLabel");
+      const engineModeLabel = document.getElementById("engineModeLabel");
+      const engineMeter = document.getElementById("engineMeter");
+      const engineLog = document.getElementById("engineLog");
+
+      let mode = "design";
+
+      function logEvent(message) {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        const bullet = document.createElement("div");
+        bullet.className = "list-bullet";
+        const body = document.createElement("div");
+        const label = document.createElement("span");
+        label.className = "list-label";
+        label.textContent = "Event:";
+        body.appendChild(label);
+        body.appendChild(document.createTextNode(" " + message));
+        item.appendChild(bullet);
+        item.appendChild(body);
+        engineLog.insertBefore(item, engineLog.firstChild);
+      }
+
+      toggleModeBtn.addEventListener("click", () => {
+        if (mode === "design") {
+          mode = "simulated";
+          modeLabel.textContent = "Simulated shell";
+          engineModeLabel.textContent = "Simulated • Local only";
+          engineMeter.style.transform = "scaleX(0.88)";
+          logEvent("Switched to simulated mode. Still local, still sovereign, no backend attached.");
+        } else if (mode === "simulated") {
+          mode = "design";
+          modeLabel.textContent = "Design shell";
+          engineModeLabel.textContent = "Idle • Design shell";
+          engineMeter.style.transform = "scaleX(0.68)";
+          logEvent("Returned to design mode. All behavior remains local and explainable.");
+        }
+      });
+
+      const workspaceItems = document.querySelectorAll(".workspace-item");
+      workspaceItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          workspaceItems.forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+          const lane = item.getAttribute("data-workspace");
+          logEvent("Focused
